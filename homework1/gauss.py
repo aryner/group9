@@ -25,7 +25,7 @@ matrix examples: [[28, 12, 20, 28], [4, 32, 28, 16]] , 2 by 4
 vector example [28, 12, 20, 28] 
 
 """
-
+import math
 
 def rows(mat):
     "return number of rows"
@@ -147,8 +147,6 @@ def augment(mat,vec):
     return(amat)
 
 
-### The next two functions support checking a solution.
-
 def getAandb(aug):
     "Returns the coef. matrix A and the vector b of Ax=b"
     m = rows(aug)
@@ -204,6 +202,50 @@ def rowReduce(M):
                 N=addrows(N, col, row, scale * N[row][col])
     return(N)
 
+def scaleVector(V, s):
+  return [k*s for k in V]
+
+def scaleRows(M):
+  N = copyMatrix(M)
+  for row in range(len(N)):
+    scalerIndex = 0
+    for index in range(len(N[row])):
+      if N[row][index] > N[row][scalerIndex]:
+        scalerIndex = index
+    N[row] = scaleVector(N[row], 1/(N[row][scalerIndex]))
+  return N
+
+def scaledPartialRowReduce(M):
+  N = scaleRows(M)
+  return rowReducePartialPivots(N)
+
+def findPartialPivot(mat, col):
+  pivot = col
+  for row in range(col, len(mat)):
+    if math.fabs(mat[row][col]) > math.fabs(mat[pivot][col]):
+      pivot = row
+
+  if mat[pivot][col] == 0:
+    return -1
+  return pivot
+
+def rowReducePartialPivots(M):
+    "return row reduced version of M"
+    N = copyMatrix(M)
+    cs = cols(M)-2   # no need to consider last two cols
+    rs = rows(M)
+    for col in range(cs+1):
+        j = findPartialPivot(N,col)
+        if j < 0:
+            print("\nrowReduce: No pivot found for column index %d "%(col))
+            return(N)
+        else:
+            if j != col:
+                N = swaprows(N,col,j)
+            scale = -1.0 / N[col][col]
+            for row in range(col+1,rs):                
+                N=addrows(N, col, row, scale * N[row][col])
+    return(N)
 
 def backSub(M):
     """
