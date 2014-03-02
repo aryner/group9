@@ -175,6 +175,14 @@ def checkSol_1(aug,x):
 
 ### The naive gaussian elimination code begins here.
 
+def populateHilbert(n):
+  H = range(1,n+1)
+  index = 0
+  for row in range(0,n):
+    H[row] = [1./(k+index) for k in range(1,n+1)]
+    index = index + 1
+  return H
+
 def findPivotrow1(mat,col):
     "Finds index of the first row with nonzero entry on or"
     "below diagonal.  If there isn't one return(-1)."
@@ -200,6 +208,29 @@ def rowReduce(M):
             scale = -1.0 / N[col][col]
             for row in range(col+1,rs):                
                 N=addrows(N, col, row, scale * N[row][col])
+    return(N)
+
+def rowReduceTrace(M):
+    "return row reduced version of M"
+    print
+    show(M)
+    print
+    N = copyMatrix(M)
+    cs = cols(M)-2   # no need to consider last two cols
+    rs = rows(M)
+    for col in range(cs+1):
+        j = findPivotrow1(N,col)
+        if j < 0:
+            print("\nrowReduce: No pivot found for column index %d "%(col))
+            return(N)
+        else:
+            if j != col:
+                N = swaprows(N,col,j)
+            scale = -1.0 / N[col][col]
+            for row in range(col+1,rs):                
+                N=addrows(N, col, row, scale * N[row][col])
+        show(N)
+        print
     return(N)
 
 def scaleVector(V, s):
@@ -259,6 +290,25 @@ def backSub(M):
         row = cs-i # work backwards
         sol[row] = ((M[row][cs] - sum([M[row][j]*sol[j] for
                     j in range(row+1,cs)])) / M[row][row]) 
+    return(sol)
+
+def backSubTrace(M):
+    """
+    given a row reduced augmented matrix with nonzero 
+    diagonal entries, returns a solution vector
+    
+    """
+    print
+    show(M)
+    print
+    cs = cols(M)-1 # cols not counting augmented col
+    sol = [0 for i in range(cs)] # place for solution vector
+    for i in range(1,cs+1):
+        row = cs-i # work backwards
+        sol[row] = ((M[row][cs] - sum([M[row][j]*sol[j] for
+                    j in range(row+1,cs)])) / M[row][row]) 
+        print
+        show(sol)
     return(sol)
 
 
