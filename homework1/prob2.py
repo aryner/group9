@@ -30,4 +30,11 @@ c = scaledPartialRowReduce(matrix)
 c = backSub(c)
 print '\nc) using Gaussian elimination with partially scaled pivoting we get:' 
 show(c)
+"""
+print '\nExamining why we get the wrong answer with part a, '
+print 'lets look at the reduced matrix using naive elemination'
+
+d = rowReduce(matrix)
+backSubTrace(d)
+"""
 

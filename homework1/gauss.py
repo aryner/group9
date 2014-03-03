@@ -172,6 +172,15 @@ def checkSol_1(aug,x):
     L  = [Ax,b,r]
     return(L)
 
+def resErrorVector(aug,x):
+    "For aug=[A|b], returns Ax, b, and b-Ax as vectors"
+    A  = getAandb(aug)[0]
+    b  = getAandb(aug)[1]
+    x_col_vec = vec2colVec(x)
+    Ax = matMult(A,x_col_vec)
+    r  = addVectors(b,scalarMult(-1.0,colVec2vec(Ax)))
+    return(r)
+
 
 ### The naive gaussian elimination code begins here.
 
@@ -182,6 +191,20 @@ def populateHilbert(n):
     H[row] = [1./(k+index) for k in range(1,n+1)]
     index = index + 1
   return H
+
+def bHilbert(n):
+  b = range(n)
+  b[0] = 2./math.pi
+  b[1] = 1./math.pi
+  if (n > 2):
+    for i in range(2,n):
+      b[i] = b[1] - i*b[1]*(i-1)*b[1]*b[i-2]
+  return b
+
+def createHilbert(n):
+  H = populateHilbert(n)
+  b = bHilbert(n)
+  return augment(H,b)
 
 def findPivotrow1(mat,col):
     "Finds index of the first row with nonzero entry on or"
@@ -265,6 +288,10 @@ def rowReducePartialPivots(M):
     N = copyMatrix(M)
     cs = cols(M)-2   # no need to consider last two cols
     rs = rows(M)
+    for col in range(cs+1):
+        j = findPartialPivot(N,col)
+        if j < 0:
+            print("\nrowReduce: No pivot found for column index %d "%(col))
     for col in range(cs+1):
         j = findPartialPivot(N,col)
         if j < 0:
@@ -405,10 +432,6 @@ def showProcess(A,S):
     print("\nAx_vec = %s"%(colVec2vec(Ax)))
     x_col_vec = vec2colVec(ge_1(aug)[1])
     L = checkSol_1(aug,ge_1(aug)[1])
-    print("\n Ax = %s, \nb = %s, \nr = %s"%(L[0],L[1],L[2]))
-    print("\naug_2 = ")
-    show(aug_2)
-    outputlist = ge_1(aug_2)
     print("\naug_2_n = ge_1(aug_2)[0] = \n")
     show(outputlist[0])
     print("\nge_1(aug_2)[1] is %s"%(outputlist[1]))
