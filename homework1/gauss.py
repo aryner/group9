@@ -85,6 +85,12 @@ def vectorQ(V):
         return(False)
     return(True)
 
+def vecMatMult(M,V):
+  result = range(len(V))
+  for i in range(len(V)):
+    result[i] = [M[i][j]*V[j] for j in range(len(V))]
+  return result
+
 def scalarMult(a,mat):
     "multiply a scalar times a matrix"
     if vectorQ(mat):
@@ -205,6 +211,45 @@ def createHilbert(n):
   H = populateHilbert(n)
   b = bHilbert(n)
   return augment(H,b)
+
+def LU(M):
+  "return L and U"
+  U = copyMatrix(M)
+  cs = cols(M)-1   # no need to consider last two cols
+  rs = rows(M)
+  L = createIdentity(rs)
+  for col in range(cs+1):
+    scale = -1.0 / U[col][col]
+    for row in range(col+1,rs):                
+      L[row][col] = -scale * U[row][col]
+      U=addrows(U, col, row, scale * U[row][col])
+  return L, U
+
+def forwardSub(M):
+    """
+    given a row reduced augmented matrix with nonzero 
+    diagonal entries, returns a solution vector
+    
+    """
+    cs = cols(M)-1 # cols not counting augmented col
+    sol = [0 for i in range(cs)] # place for solution vector
+    sol[0] = M[0][cs] / M[0][0]
+    for i in range(1,cs):
+        row = i # work backwards
+        sol[row] = ((M[row][cs] - sum([M[row][j]*sol[j] for
+                    j in range(0,row)])) / M[row][row]) 
+    return(sol)
+
+def createIdentity(n):
+  I = range(n)
+  for i in range(n):
+    I[i] = range(n)
+    for j in range(n):
+      if(i == j):
+        I[i][j] = 1
+      else:
+        I[i][j] = 0
+  return I
 
 def findPivotrow1(mat,col):
     "Finds index of the first row with nonzero entry on or"
