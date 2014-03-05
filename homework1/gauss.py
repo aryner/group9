@@ -198,6 +198,23 @@ def populateHilbert(n):
     index = index + 1
   return H
 
+def hilbertInverse(n):
+  H = range(n)
+  for k in range(1,n+1):
+    H[k-1] = [math.pow(-1,k+l)*(k+l-1)*binomCoe(n+k-1,n-l)*binomCoe(n+l-1,n-k)*math.pow(binomCoe(k+l-2,k-1),2) for l in range(1,n+1)]
+  return H
+
+def binomCoe(n,k):
+  top = factorial(n)
+  bot = factorial(k)*factorial(n-k)
+  return top/bot
+
+def factorial(n):
+  product = 1
+  for i in range(1,n+1):
+    product = product * i
+  return product
+
 def bHilbert(n):
   b = range(n)
   b[0] = 2./math.pi
