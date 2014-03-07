@@ -257,6 +257,23 @@ def forwardSub(M):
                     j in range(0,row)])) / M[row][row]) 
     return(sol)
 
+def gaussSeidel(M,v,tolerance):
+  v2 = range(len(v))
+  for i in range(len(v)):
+    v2[i] = (1/M[i][i]) * (M[i][len(v)-1] - sum([M[i][j]*v2[j] for j in range(i)]) - sum([M[i][k]*v[k] for k in range(i+1,len(v))]))
+  tolCheck = maxNorm(addVectors(v2, scaleVector(v,-1))) / maxNorm(v2)
+  if tolCheck < tolerance :
+    return v2
+  else :
+    return gaussSeidel(M,v2,tolerance)
+
+def maxNorm(v):
+  max = v[0]
+  for i in range(1,len(v)):
+    if v[i] > max:
+      max = v[i]
+  return max
+
 def createIdentity(n):
   I = range(n)
   for i in range(n):

@@ -32,3 +32,10 @@ show(x)
 #bError = resErrorVector(Hb,x)
 #show(bError)
 
+g = gaussSeidel(Hb, [0 for i in range(n)],0.1)
+print '\nd) using gauss-seidel we get: '
+show(g)
+#print '\nwith a residual error vector of: '
+#gError = resErrorVector(Hb,g)
+#show(gError)
+
