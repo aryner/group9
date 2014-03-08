@@ -280,10 +280,79 @@ def createIdentity(n):
     I[i] = range(n)
     for j in range(n):
       if(i == j):
-        I[i][j] = 1
+        I[i][j] = 1.
       else:
-        I[i][j] = 0
+        I[i][j] = 0.
   return I
+
+def invertScaledGauss(M):
+  "return row reduced version of M"
+  N = scaleRows(M) 
+  rs = rows(M)
+  idMat = createIdentity(rs)
+  for i in range(rs):
+    N = augment(N, getCol(idMat, i))
+  rs = rows(N)
+  for col in range(rs):
+    j = findPartialPivot(N,col)
+    if j < 0:
+      print("\nrowReduce: No pivot found for column index %d "%(col))
+    else:
+      if j != col:
+        N = swaprows(N,col,j)
+      scale = -1.0 / N[col][col]
+      for row in range(col+1,rs):                
+        N=addrows(N, col, row, scale * N[row][col])
+  return solveInverse(N)
+
+def invertGauss(M):
+    "return row reduced version of M"
+    rs = rows(M)
+    idMat = createIdentity(rs)
+    N = copyMatrix(M)
+    for i in range(rs):
+      N = augment(N, getCol(idMat, i))
+    rs = rows(N)
+    for col in range(rs):
+        j = findPivotrow1(N,col)
+        if j < 0:
+            print("\nrowReduce: No pivot found for column index %d "%(col))
+            return(N)
+        else:
+            if j != col:
+                N = swaprows(N,col,j)
+            scale = -1.0 / N[col][col]
+            for row in range(col+1,rs):                
+                N=addrows(N, col, row, scale * N[row][col])
+    return solveInverse(N)
+
+def solveInverse(N):
+  """
+  given a row reduced augmented matrix with nonzero 
+  diagonal entries, returns a solution vector
+   
+  """
+  inverse = 1
+  m = range(rows(N))
+  length = m
+  for i in length:
+    m[i] = [N[i][j] for j in range(rows(N))]
+  for k in range(rows(N)):
+    M = augment(m, getCol(N, rows(N)+k))
+    cs = cols(M)-1 # cols not counting augmented col
+    sol = [0 for i in range(cs)] # place for solution vector
+    for i in range(1,cs+1):
+      row = cs-i # work backwards
+      sol[row] = ((M[row][cs] - sum([M[row][j]*sol[j] for
+        j in range(row+1,cs)])) / M[row][row]) 
+    inverse = createAug(inverse, sol)
+  return inverse
+
+def createAug(M,v):
+  if M != 1:
+    return augment(M,v)
+  else:
+    return [[v[i]] for i in range(len(v))]
 
 def findPivotrow1(mat,col):
     "Finds index of the first row with nonzero entry on or"
