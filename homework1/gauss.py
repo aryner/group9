@@ -473,7 +473,7 @@ def backSubTrace(M):
     diagonal entries, returns a solution vector
     
     """
-    print
+    print 'After being reduced our matrix is:'
     show(M)
     print
     cs = cols(M)-1 # cols not counting augmented col
@@ -483,6 +483,7 @@ def backSubTrace(M):
         sol[row] = ((M[row][cs] - sum([M[row][j]*sol[j] for
                     j in range(row+1,cs)])) / M[row][row]) 
         print
+        print 'Back sub step %d'%i
         show(sol)
     return(sol)
 
