@@ -1,0 +1,38 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww12000\viewh6760\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\b\fs24 \cf0 Problem 2:
+\b0 \
+\
+For part A we used the functions provided to us to row reduce with naive elimination and then back substituted to find a solution vector.  for part B we then used the rowReduce function provided as a model to make the rowReducePartialPivots functions.  This is essentially the same function but instead of using findPivotRow1 we created a findPartialPivot function.  From here again we used the backSub function to find a solution vector.  For part C we created the function scaledPartialRowReduce which first calls the function scaleRows which, as the name implies, scales the rows then returns the result of calling the rowReducePartialPivots function.  And once again we called backSub to get a solution vector.\
+\
+From here we noticed that the solutions for A and B where the same because the first 3 elements of row 1 are 10 and every element below the main diagonal is 1.  So in step one of row reducing we already have a row reduced matrix.  So it made no difference whether we used partial pivoting or naive elimination.\
+\
+Then we compared the reduce matrices from A and C to observe: \'93\'85x4 should be about 1-3(10^(-16)), however, both algorithms round that to 1 which is not far off. Except that in part A this error is multiplied by -10^16 when solving for x3 which makes it a much more meaningful error as opposed to part C where the error has almost no impact\'94.  This is why the residual error vector for A and B is off and the one for C is very close to the zero vector.\
+\
+
+\b Problem 3:
+\b0 \
+\
+First we created a populateHilbert function to make Hilbert matrices of whatever sizes we wanted.  Then we created a bHilbert function to create the b vector for our Hilbert matrices using the fact that the first two elements of such a vector are 2/pi and 1/pi then using the recursive algorithm to find the rest.  Then we created an LU function to return the L and U matrix from LU factorization.  This was essentially the naive elimination function but at the start we create an identity matrix and as we go through the algorithm we fill in the identity matrix to make the L matrix and the row reduction creates the U matrix.  Later we broke the function into two, and L and U function to make it easier to create a list of matrices.  Then we created a gaussSeidel function that that takes in a matrix, vector and tolerance and creates a new vector using the old one and where it can parts of the newly created vector.  If this is below the tolerance the new vector is returned, if not the function recursively calls itself using the newly created vector as an argument.\
+\
+With our functions made we created lists of solution vectors for each algorithm which we turned into lists of residual error vectors for each algorithm and printed them side by side in size categories.\
+\
+Running our program it was easy to see that only the Gauss-Siedel function gave good answers, with residual error vectors having elements between -0.03 and 0.6 for all sizes tested.\
+\
+We also noted that naive elimination and LU factorization usually gave very similar results.  This makes sense as the U matrix is created using naive elimination.\
+\
+
+\b Problem 4
+\b0 \
+\
+First we created a hilbertInverse function which was straight forward as we where given the algorithm to compute its elements.  We then created an invertGauss function that starts by augmenting the matrix we intend to invert with the identity matrix and then proceeds to row reduce the augmented matrix.  The reduced matrix is then passed to the solveInverse function which as the name implies, solves for the inverse.  \
+\
+At first we thought this was enough until we tried to look at a 25x25 Hilbert inverse approximation.  Even if it could fit on the screen it would have been difficult to gather much meaning with out staring at it for a very long time.\
+\
+So we created compareMats and avgElement functions.  The compare function returned a new matrix whose elements are the elements of one matrix subtracted from the elements of a second matrix.   The closer these elements are to 0 the closer these matrices are to being the same.  The avgElement function sums the absolute value of each element in a matrix and divides this by the number of elements in the matrix.  Combining these functions we are able to see how far on average each element in our approximations are from the exact result without having to look at an overwhelming wall of numbers.\
+\
+With our functions in place we found that up to size 7 our approximations where pretty accurate but at size 8 there was a big jump in our error which kept getting bigger and bigger.  What was really interesting was that even though the error in our inverses got very bad, the inverse approximation times the Hilbert matrix comparatively never that far from the identity matrix.  At size 15 using scaled Gaussian elimination our approximate inverse had an error bigger that 6(10^19) while multiplying the approximation by our Hilbert matrix resulted in a matrix who average element differed from the identity matrix by only 0.9.}
