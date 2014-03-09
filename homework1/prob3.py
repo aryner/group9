@@ -1,41 +1,44 @@
 from gauss import *
 
-n = 5
-H = populateHilbert(n)
-bv = bHilbert(n)
-Hb = augment(H,bv)
-print "The following is done using a %ix%i Hilbert matrix shown here:" %(n,n)
-show(Hb)
+nums = [3,5,10,15,20,25]
 
-a = rowReduce(Hb)
-a = backSub(a)
-print '\na) using basic Gaussian eleminiation we get: '
-show(a)
-#print '\nwith a residual error vector of: '
-#aError = resErrorVector(Hb,a)
-#show(aError)
+H = [populateHilbert(i) for i in nums]
+Vb = [bHilbert(i) for i in nums]
+Hb = [augment(H[i],Vb[i]) for i in range(len(nums))]
 
-b = scaledPartialRowReduce(Hb)
-b = backSub(b)
-print '\nb) using Gaussian elimination with scaled partial pivoting we get: '
-show(b)
-#print '\nwith a residual error vector of: '
-#bError = resErrorVector(Hb,b)
-#show(bError)
+a = [rowReduce(Hb[i]) for i in range(len(nums))]
+A = [backSub(a[i]) for i in range(len(nums))]
+Ar = [resErrorVector(Hb[i],A[i]) for i in range(len(nums))]
 
-L,U = LU(H)
-y = forwardSub(augment(L,bv))
-x = backSub(augment(U,y))
-print '\nc) using LU factorization we get:'
-show(x)
-#print '\nwith a residual error vector of: '
-#bError = resErrorVector(Hb,x)
-#show(bError)
+b = [scaledPartialRowReduce(Hb[i]) for i in range(len(nums))]
+B = [backSub(b[i]) for i in range(len(nums))]
+Br = [resErrorVector(Hb[i],B[i]) for i in range(len(nums))]
 
-g = gaussSeidel(Hb, [0 for i in range(n)],0.1)
-print '\nd) using gauss-seidel we get: '
-show(g)
-#print '\nwith a residual error vector of: '
-#gError = resErrorVector(Hb,g)
-#show(gError)
+L = [L(H[i]) for i in range(len(nums))]
+U = [U(H[i]) for i in range(len(nums))]
+y = [forwardSub(augment(L[i],Vb[i])) for i in range(len(nums))]
+x = [backSub(augment(U[i],y[i])) for i in range(len(nums))]
+xr = [resErrorVector(Hb[i],x[i]) for i in range(len(nums))]
 
+g = [gaussSeidel(Hb[i], [0 for j in range(nums[i])],0.1) for i in range(len(nums))]
+gr = [resErrorVector(Hb[i],g[i]) for i in range(len(nums))]
+
+print 'Here we made 6 Hilbert matrices of sizes 3,5,10,15,20,25 and'
+print 'solved them each using basic Gaussian elimination, '
+print 'scaled partial pivoting, LU factorization, and Gauss-Seidel.'
+print 'Below are the residual error vectors for each matrix size and'
+print 'solution method combination:'
+print
+for i in range(len(nums)):
+  print '\t\t\t\t\t\t\tsize: %d'%nums[i]
+  print '\tbasic\t\t\t\tscaled\t\t\t\tLU\t\t\t\tG-S'
+  for j in range(len(Ar[i])):
+    print '%s\t\t%s\t\t%s\t\t%s'%(Ar[i][j],Br[i][j],xr[i][j],gr[i][j])
+  print
+
+print '\nIt seems that throughout basic, scaled, and LU give consistently'
+print 'not great answers.  Most elements in these vectors fall between'
+print 'about -4 and 4 with a few going higher, some almost reaching 10'
+print 'or -10.  Gauss-Seidel on the other hand is very consistently close'
+print 'to the solution with the elements in its error vectors never leaving'
+print 'a lower bound of -1 and upper bound of 1'

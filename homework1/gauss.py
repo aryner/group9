@@ -131,6 +131,13 @@ def show(mat):
     for row in mat:
         print(row)
 
+def showMany(mats):
+  n = len(mats)
+  for i in range(len(mats[0])):
+    for j in range(n):
+      print '\t%f'%mats[j][i],
+    print ''
+
 ### vectors vs rowVectors and colVectors
 ### the latter are matrices
 
@@ -241,6 +248,32 @@ def LU(M):
       L[row][col] = -scale * U[row][col]
       U=addrows(U, col, row, scale * U[row][col])
   return L, U
+
+def L(M):
+  "return L and U"
+  U = copyMatrix(M)
+  cs = cols(M)-1   # no need to consider last two cols
+  rs = rows(M)
+  L = createIdentity(rs)
+  for col in range(cs+1):
+    scale = -1.0 / U[col][col]
+    for row in range(col+1,rs):                
+      L[row][col] = -scale * U[row][col]
+      U=addrows(U, col, row, scale * U[row][col])
+  return L
+
+def U(M):
+  "return L and U"
+  U = copyMatrix(M)
+  cs = cols(M)-1   # no need to consider last two cols
+  rs = rows(M)
+  L = createIdentity(rs)
+  for col in range(cs+1):
+    scale = -1.0 / U[col][col]
+    for row in range(col+1,rs):                
+      L[row][col] = -scale * U[row][col]
+      U=addrows(U, col, row, scale * U[row][col])
+  return U
 
 def forwardSub(M):
     """
