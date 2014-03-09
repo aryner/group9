@@ -125,6 +125,12 @@ def addrows(M, f, t, scale=1):
     T=addVectors(scalarMult(scale,N[f]),N[t])
     N[t]=T
     return(N)
+
+def roundMat(mat, p):
+  A = range(len(mat)) 
+  for i in range(len(mat)):
+    A[i] = [round(mat[i][j],p) for j in range(len(mat[i]))]
+  return A
     
 def show(mat):
     "Print out matrix"
@@ -137,6 +143,19 @@ def showMany(mats):
     for j in range(n):
       print '\t%f'%mats[j][i],
     print ''
+
+def compareMats(A,B):
+  C = range(len(A))
+  for i in range(len(A)):
+    C[i] = [A[i][j]-B[i][j] for j in range(len(A[i]))]
+  return C
+
+def avgElement(A):
+  sum = 0;
+  for i in range(len(A)):
+    for j in range(len(A[0])):
+      sum = sum + math.fabs(A[i][j])
+  return sum / (len(A) + len(A[0]))
 
 ### vectors vs rowVectors and colVectors
 ### the latter are matrices
@@ -320,12 +339,13 @@ def createIdentity(n):
 
 def invertScaledGauss(M):
   "return row reduced version of M"
-  N = scaleRows(M) 
+  N = copyMatrix(M) 
   rs = rows(M)
   idMat = createIdentity(rs)
   for i in range(rs):
     N = augment(N, getCol(idMat, i))
   rs = rows(N)
+  N = scaleRows(N)
   for col in range(rs):
     j = findPartialPivot(N,col)
     if j < 0:
