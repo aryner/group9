@@ -1,0 +1,83 @@
+We will compare the exact inverse of Hilbert matrices of different
+sizes with approximate inverses found with basic Gaussian elemination
+and partialy scaled Gaussian elemination by subtracting each element
+in the approximation from each element in the exact inverse. The closer
+the resulting matrix is to the zero matrix, better the approximation was.
+Because these matrices are hard to fit on the screen, instead of showing
+them we will sum the absolute value of each element in the compare matrix
+and divide by the number of elements in the matrix to get an average element
+error. We will also show the result of multiplying the approximations with the
+Hilbert matrix to see how close to the identy matrix we get. Again 
+Because it is hard to read these matrices on the screen we will print
+the average element error from the identy matrix rather than the matrix
+
+		For size 3
+For basic Gaussian elemination the average element error is: 9.31403102792e-13
+And the approximation times the Hilbert matrix is: 1.48029736617e-15
+
+For partially scaled Gaussian elemination the average element error is: 5.21656791837e-13
+And the approximation times the Hilbert matrix is: 2.51650552248e-15
+
+
+		For size 5
+For basic Gaussian elemination the average element error is: 7.6479474842e-08
+And the approximation times the Hilbert matrix is: 2.87201373794e-12
+
+For partially scaled Gaussian elemination the average element error is: 9.23470793168e-09
+And the approximation times the Hilbert matrix is: 1.48077106132e-12
+
+
+		For size 7
+For basic Gaussian elemination the average element error is: 0.291459987262
+And the approximation times the Hilbert matrix is: 1.3541239241e-09
+
+For partially scaled Gaussian elemination the average element error is: 0.252605684406
+And the approximation times the Hilbert matrix is: 1.31663974961e-09
+
+
+		For size 8
+For basic Gaussian elemination the average element error is: 44.424598543
+And the approximation times the Hilbert matrix is: 4.20952517288e-08
+
+For partially scaled Gaussian elemination the average element error is: 18.0606738182
+And the approximation times the Hilbert matrix is: 5.29263957105e-08
+
+
+		For size 10
+For basic Gaussian elemination the average element error is: 183891500.621
+And the approximation times the Hilbert matrix is: 4.19453546783e-05
+
+For partially scaled Gaussian elemination the average element error is: 219937164.967
+And the approximation times the Hilbert matrix is: 4.0369989074e-05
+
+
+		For size 15
+For basic Gaussian elemination the average element error is: 6.2560491751e+19
+And the approximation times the Hilbert matrix is: 1.01350007177
+
+For partially scaled Gaussian elemination the average element error is: 6.25548193084e+19
+And the approximation times the Hilbert matrix is: 0.899985482047
+
+
+		For size 20
+For basic Gaussian elemination the average element error is: 2.11182856404e+27
+And the approximation times the Hilbert matrix is: 7.54158385808
+
+For partially scaled Gaussian elemination the average element error is: 2.11182856407e+27
+And the approximation times the Hilbert matrix is: 3.82317269347
+
+
+		For size 25
+For basic Gaussian elemination the average element error is: 7.62160958667e+34
+And the approximation times the Hilbert matrix is: 75.3359839749
+
+For partially scaled Gaussian elemination the average element error is: 7.62160958667e+34
+And the approximation times the Hilbert matrix is: 8.53686792657
+
+All the way up to size 7 the average element error is pretty small but as soon
+as we reach size 8, both approximations have huge jumps in their error that keep
+getting bigger.  By 25 they are HUGE. What is particularly interesting is that
+the difference between the identity matrix and the multiple of the approximation
+and the Hilbert matrix never gets that big.  Under size 15 it seems pretty close.
+Even at size 25, the error is much bigger than what is acceptable but compared to
+the erros in the approximations themselves, they are nothing

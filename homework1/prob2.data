@@ -1,0 +1,59 @@
+***The matrix in question:***
+[10.0, 10.0, 10.0, 1e+17, 1e+17]
+[1.0, 0.001, 0.001, 0.001, 1.0]
+[1.0, 1.0, 0.001, 0.001, 2.0]
+[1.0, 1.0, 1.0, 0.001, 3.0]
+
+a) using basic Gaussian elemination we get:
+0.0
+2.002002002
+2.002002002
+1.0
+
+b) using Gaussian elemination with partial pivoting we get:
+0.0
+2.002002002
+2.002002002
+1.0
+
+c) using Gaussian elimination with partially scaled pivoting we get:
+0.996997997998
+1.001001001
+1.001001001
+1.0
+
+we get the same answer in part a and be because zeroing out
+the first column below position 1,1 completely row reduces 
+the matrix so it makes no diffrence if we use partial pivots
+
+Knowing this the resdual error vector for both a and b is:
+0.0
+0.994995995996
+-0.005004004004
+-1.005004004
+
+and the residual error vector for part c is:
+0.0
+0.0
+0.0
+-4.4408920985e-16
+
+So using partially scaled pivoting we get very close to the answer, 
+but with basic Gaussian elimination we do not get quite as close.
+Now lets compare the reduced matrix from a and from c:
+
+[10.0, 10.0, 10.0, 1e+17, 1e+17]
+[0.0, -0.999, -0.999, -1e+16, -1e+16]
+[0.0, 0.0, -0.999, -1e+16, -9999999999999998.0]
+[0.0, 0.0, 0.0, -1e+16, -9999999999999996.0]
+
+[1.0, 0.001, 0.001, 0.001, 1.0]
+[0.0, 0.4995, 0.0, 0.0, 0.5]
+[0.0, 0.0, 0.33299999999999996, 0.0, 0.3333333333333334]
+[0.0, 0.0, 0.0, 1.0, 0.9999999999999997]
+
+We can see that x4 should be about 1-3(10^(-16))
+However, both algorithms round that to 1 which is not far off.
+Except that in part a this error is multiplied by -10^16 when solving
+for x3 which makes it a much more meaningful error as opposed to part
+c where the error has almost no impact
