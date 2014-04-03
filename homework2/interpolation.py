@@ -16,6 +16,10 @@ def createLi(xs, i):
     return reduce(mul, prods, 1)
   return Li
 
+def hermite(x, fx, dfx):
+  Q = hermiteCoefficients(x, fx, dfx)
+  return completeHermite(Q, x)
+
 def hermiteCoefficients(x, fx, dfx):
   z = range(len(x)*2)
   Q = range(len(z))
@@ -54,3 +58,50 @@ def completeHermite(Q,xs):
         H[i] = H[i] * factors[j/2]
     return sum(H)
   return func
+
+def cubicSpline(xs, fx):
+  a,b,c,d = cubicSplineUnknowns(xs, fx)
+  def func(x):
+    if x > xs[len(xs)-1]:
+      return a[len(xs)-2] + b[len(xs)-2]*(x-xs[len(xs)-2]) + c[len(xs)-2]*(x-xs[len(xs)-2])**2 + d[len(xs)-2]*(x-xs[len(xs)-2])**3
+
+    for i in range(len(a)-1):
+      if x < xs[i+1]:
+        return a[i] + b[i]*(x-xs[i]) + c[i]*(x-xs[i])**2 + d[i]*(x-xs[i])**3
+  return func
+
+def cubicSplineUnknowns(x, fx):
+  a = fx
+
+  h = range(len(x)-1)
+  for i in range(len(x)-1):
+    h[i] = x[i+1] - x[i]
+
+  alpha = range(len(x)-1)
+  for i in range(1, len(x)-1):
+    alpha[i] = (3/h[i])*(a[i+1]-a[i]) - (3/h[i-1])*(a[i]-a[i-1])
+
+  l = range(len(x))
+  u = range(len(x)-1)
+  z = range(len(x))
+  for i in range(1, len(x)-1):
+    l[i] = 2*(x[i+1] - x[i-1]) - h[i-1] * u[i-1]
+    u[i] = h[i] / l[i]
+    z[i] = (alpha[i] - h[i-1] * z[i-1]) / l[i]
+
+  l[len(x)-1] = 1
+  z[len(x)-1] = 0
+
+  b = range(len(x)-1)
+  c = range(len(x))
+  d = range(len(x)-1)
+  c[len(c)-1] = 0
+  L = range(len(x)-1)
+  for i in L[::-1]:
+    c[i] = z[i] - u[i] * c[i+1]
+    b[i] = (a[i+1] - a[i]) / h[i] - h[i]*(c[i+1] + 2*c[i])/3
+    d[i] = (c[i+1] - c[i]) / (3*h[i])
+
+  return a[:len(x)-1], b, c[:len(x)-1], d
+
+
