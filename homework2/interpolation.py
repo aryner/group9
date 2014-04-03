@@ -104,4 +104,28 @@ def cubicSplineUnknowns(x, fx):
 
   return a[:len(x)-1], b, c[:len(x)-1], d
 
+def linearSpline(xs, fx):
+  def func(x):
+    yPsi = range(len(fx))
+    for i in range(len(fx)):
+      yPsi[i] = fx[i] * psi(x, xs, i)
+    return sum(yPsi)
+  return func
+
+def psi(x, xs, i):
+  if i == 0:
+    return theta1((x-xs[0])/(xs[1]-xs[0]))
+  if i == len(xs)-1:
+    return theta2((x-xs[len(xs)-1])/(xs[len(xs)-1]-xs[len(xs)-2]))
+  return theta2((x-xs[i-1])/(xs[i]-xs[i-1])) + theta1((x-xs[i])/(xs[i+1]-xs[i]))
+
+def theta1(x):
+  if x >= 0  and x < 1:
+    return 1-x
+  return 0
+
+def theta2(x):
+  if x >= 0  and x < 1:
+    return x
+  return 0
 

@@ -25,8 +25,11 @@ y4 = [hermite(i) for i in x1]
 cubicSpline = cubicSpline(x, y)
 y5 = [cubicSpline(i) for i in x2]
 
+linearSpline = linearSpline(x,y)
+y6 = [linearSpline(i) for i in x2]
+
 plt.plot(x2, y1, 'g')
 plt.plot(x, y, 'ro')
-plt.plot(x2, y5, 'b')
+plt.plot(x2, y6, 'b')
 plt.plot(x1, y4, 'y')
 plt.show()
