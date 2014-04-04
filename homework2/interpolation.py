@@ -1,6 +1,11 @@
 import numpy as np
 from operator import mul
 
+def differenceFunction(f, g):
+  def func(x):
+    return f(x) - g(x)
+  return func
+
 def createLagrange(x, y):
   def lagrange(z):
     L = range(len(x))
@@ -62,12 +67,10 @@ def completeHermite(Q,xs):
 def cubicSpline(xs, fx):
   a,b,c,d = cubicSplineUnknowns(xs, fx)
   def func(x):
-    if x > xs[len(xs)-1]:
-      return a[len(xs)-2] + b[len(xs)-2]*(x-xs[len(xs)-2]) + c[len(xs)-2]*(x-xs[len(xs)-2])**2 + d[len(xs)-2]*(x-xs[len(xs)-2])**3
-
     for i in range(len(a)-1):
       if x < xs[i+1]:
         return a[i] + b[i]*(x-xs[i]) + c[i]*(x-xs[i])**2 + d[i]*(x-xs[i])**3
+    return a[len(xs)-2] + b[len(xs)-2]*(x-xs[len(xs)-2]) + c[len(xs)-2]*(x-xs[len(xs)-2])**2 + d[len(xs)-2]*(x-xs[len(xs)-2])**3
   return func
 
 def cubicSplineUnknowns(x, fx):
