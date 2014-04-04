@@ -1,0 +1,21 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Numerical Analysis Homework 2 problem 3\
+\
+To solve this problem first we needed functions to make the interpolations.  \
+\
+First we made theta1 and theta2 functions which return 1-x or x if the x given to them is between 1 and 0 and return 0 otherwise.  Using these two functions we created a psi function that returns the psi outlined in the notes given on iLearn.  With the psi function we were able to create the LinearSpline function which takes the given x values and f(x) values and returns a function that takes an x as an input and returns the value of the linear spline at that x.\
+\
+To make Lagrange interpolations we only made two functions.  First we made createLi which takes as its\'92 input the list of x values and an index i and returns a function that when given an x value returns L[i] of that x value.  With this function in place we were able to make the createLagrange function which takes as inputs list of x values and f(x) values and returns a function that when given an input, returns the Lagrange interpolation polynomial evaluated at that input.\
+\
+To make Hermite interpolations we made three functions.  First we made the hermiteCoefficients function which takes the 3 lists of x, fx and the derivative of fx and returns the list of coefficients for the Hermite polynomial.   Then we made completeHermite which takes as inputs the coefficients found in hermiteCoefficents and the list of xs\'92 given and returns a function that when given an input, returns the Hermite polynomial evaluated at that inputs value.  Finally we made a hermite function which simply combines the first two functions.\
+\
+For cubic splines we made two functions.  Fist the cubicSplineUnknowns function takes a list of x values and f(x) values and returns 4 lists, the list of a, b, c, and d values for the unknowns in a cubic spline.  Then we made a cubicSpline function which takes as inputs the list of xs and f(x)s and returns a function that when given an x value returns the cubic spline polynomial evaluated at that value.\
+\
+With these functions in place we made a program that made 2 graphs for the linear spline and 4 graphs for the other 3 interpolations.  The linear spline graphs show f(x) compared to the linear spline and a graph of their difference function.  The other 3 each show f(x) compared to the interpolation and three difference graphs, one of the middle 50% and the other two of the first and last quarter.  \
+\
+As one might expect the linear spline is not incredibly accurate and it is easy to see this looking at either the difference function or the comparison between f(x) and the interpolation.  The other 3 are much more accurate, looking almost identical in-between 0 and 1 with the Hermite interpolation seeming to differ slightly between 0 and 0.2.  That is until you look at the difference functions of each interpolation.  At this point Hermite takes a clear lead, at least within the confines of 0 < x < 1.  If they were perfect matches the difference functions would always evaluate to 0 and be straight lines, but none of them are straight.  Looking at the middle half of Hermite, its\'92 greatest difference from 0 is only 0.0012 and most this section is less than 0.0001, very accurate.  The next closest is Lagrange with peak difference of about 0.005 and a second at about 0.001.  Then comes the cubic spline with a peak difference at 0.04 and a second at 0.01.}
