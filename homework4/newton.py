@@ -4,6 +4,14 @@ from polynomials import *
 def generateX(numPoints, start, finish):
   return [((finish-start)/(numPoints-1))*i+start for i in range(numPoints)]
 
+def infinTol(old,new):
+  top = [np.fabs(old[0]-new[0]),np.fabs(old[1]-new[1])]
+  top = max(top)
+  bot = [np.fabs(old[0]),np.fabs(old[1])]
+  return top/max(bot)
+
+def newton(
+
 def newton2d(one,two, guess):
   xD1 = derivative2dX(one)
   xD2 = derivative2dX(two)
