@@ -82,13 +82,21 @@ def evaluate2d(P,v):
     if isinstance(P[0][i][0], (int,long,float,complex)):
       sol = sol + P[0][i][0]*v[0]**P[0][i][1]
     else:
-      num = float(P[0][i][0][:-1])
+      num = 1
+      if len(P[0][i][0]) > 1:
+        num = float(P[0][i][0][:-1])
+      else:
+        num = float(P[0][i][0])
       sol = sol + num*v[1]*v[0]**P[0][i][1]
   for i in range(len(P[1])):
     if isinstance(P[1][i][0], (int,long,float,complex)):
       sol = sol + P[1][i][0]*v[1]**P[1][i][1]
     else:
-      num = float(P[1][i][0][:-1])
+      num = 1
+      if len(P[1][i][0]) > 1 :
+        num = float(P[1][i][0][:-1])
+      else:
+        num = float(P[1][i][0])
       sol = sol + num*v[0]*v[1]**P[1][i][1]
   return sol
 
@@ -96,15 +104,16 @@ def derivative2dX(P):
   X=[]
   Y=[]
   for i in range(len(P[0])):
-    if isinstance(P[0][i][0], (int,long,float,complex)):
-      X.append([P[0][i][0]*P[0][i][1],P[0][i][1]-1])
-      if P[0][i][1] == 0:
-        break
-    else:
-      num = float(P[0][i][0][:-1])
-      X.append([str(num*P[0][i][1])+'y',P[0][i][1]-1])
-      if P[1][i][1] == 0:
-        break
+    if P[0][i][1] != 0:
+      if isinstance(P[0][i][0], (int,long,float,complex)):
+        X.append([P[0][i][0]*P[0][i][1],P[0][i][1]-1])
+        if P[0][i][1] == 0:
+          break
+      else:
+        num = float(P[0][i][0][:-1])
+        X.append([str(num*P[0][i][1])+'y',P[0][i][1]-1])
+        if P[1][i][1] == 0:
+          break
   for i in range(len(P[1])):
     if isinstance(P[1][i][0], (int,long,float,complex)):
       this = 'stub'
@@ -116,15 +125,16 @@ def derivative2dY(P):
   X=[]
   Y=[]
   for i in range(len(P[1])):
-    if isinstance(P[1][i][0], (int,long,float,complex)):
-      Y.append([P[1][i][0]*P[1][i][1],P[1][i][1]-1])
-      if P[1][i][1] == 0:
-        break
-    else:
-      num = float(P[1][i][0][:-1])
-      Y.append([str(num*P[1][i][1])+'x',P[1][i][1]-1])
-      if P[1][i][1] == 0:
-        break
+    if P[1][i][1] != 0:
+      if isinstance(P[1][i][0], (int,long,float,complex)):
+        Y.append([P[1][i][0]*P[1][i][1],P[1][i][1]-1])
+        if P[1][i][1] == 0:
+          break
+      else:
+        num = float(P[1][i][0][:-1])
+        Y.append([str(num*P[1][i][1])+'x',P[1][i][1]-1])
+        if P[1][i][1] == 0:
+          break
   for i in range(len(P[0])):
     if isinstance(P[0][i][0], (int,long,float,complex)):
       this = 'stub'
@@ -183,18 +193,18 @@ def derivative(P):
 #printPoly(testP)
 #printPoly(derivative(testP))
 #printPoly(testP)
-print2d(test2d)
+#print2d(test2d)
 #print 
 #print evaluate2d(test2d,[2,2])
 #print2d(derivative2dX(test2d))
 #print
 #print2d(derivative2dY(test2d))
-print
-print2d(test2d2)
-print 
+#print
+#print2d(test2d2)
+#print 
 #print evaluate2d(test2d2,[2,2])
 #print2d(derivative2dX(test2d2))
 #print
 #print2d(derivative2dY(test2d2))
 #print
-print2d(add2d(test2d,test2d2))
+#print2d(add2d(test2d,test2d2))
