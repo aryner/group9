@@ -24,6 +24,58 @@ testP = [[4,512],[7,256],[3,1],[1,0]]
 test2d = [[[3,2]],[[-1,2]]]
 test2d2 = [[[-1,2]],[['3x',2],[-1,0]]]
 
+def add2d(one,two):
+  X=[]
+  Y=[]
+  xD = []
+  yD = []
+  for i in range(len(one[0])):
+    found = False
+    if isinstance(one[0][i][0], (int,long,float,complex)):
+      for j in range(len(two[0])):
+        if isinstance(two[0][j][0], (int,long,float,complex)):
+          if one[0][i][1] == two[0][j][1]:
+            X.append([one[0][i][0]+two[0][j][0],one[0][i][1]])
+            xD.append(j)
+            found=True
+        else:
+          X.append(two[0][j])
+          xD.append(j)
+      if found==False:
+        X.append(one[0][i])
+    else:
+      X.append(one[0][i])
+
+  for i in range(len(one[1])):
+    found = False
+    if isinstance(one[1][i][0], (int,long,float,complex)):
+      for j in range(len(two[1])):
+        if isinstance(two[1][j][0], (int,long,float,complex)):
+          if one[1][i][1] == two[1][j][1]:
+            Y.append([one[1][i][0]+two[1][j][0],one[1][i][1]])
+            yD.append(j)
+            found=True
+        else:
+          Y.append(two[1][j])
+          yD.append(j)
+      if found==False:
+        Y.append(one[1][i])
+    else:
+      Y.append(one[1][i])
+
+  for i in range(len(xD)):
+    del two[0][xD[i]]
+  for i in range(len(yD)):
+    del two[1][yD[i]]
+
+  for i in range(len(two[1])):
+    Y.append(two[1][i])
+  for i in range(len(two[0])):
+    X.append(two[0][i])
+  return [X,Y]
+
+
+
 def evaluate2d(P,v):
   sol = 0
   for i in range(len(P[0])):
@@ -132,16 +184,17 @@ def derivative(P):
 #printPoly(derivative(testP))
 #printPoly(testP)
 print2d(test2d)
-print 
-print evaluate2d(test2d,[2,2])
-print2d(derivative2dX(test2d))
-print
-print2d(derivative2dY(test2d))
+#print 
+#print evaluate2d(test2d,[2,2])
+#print2d(derivative2dX(test2d))
+#print
+#print2d(derivative2dY(test2d))
 print
 print2d(test2d2)
 print 
-print evaluate2d(test2d2,[2,2])
-print2d(derivative2dX(test2d2))
-print
-print2d(derivative2dY(test2d2))
-
+#print evaluate2d(test2d2,[2,2])
+#print2d(derivative2dX(test2d2))
+#print
+#print2d(derivative2dY(test2d2))
+#print
+print2d(add2d(test2d,test2d2))
