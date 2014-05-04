@@ -4,13 +4,18 @@ from polynomials import *
 def generateX(numPoints, start, finish):
   return [((finish-start)/(numPoints-1))*i+start for i in range(numPoints)]
 
+def singleTol(old,new):
+  top = np.fabs(old-new)
+  return top/np.fabs(old)
+
 def infinTol(old,new):
-  top = [np.fabs(old[0]-new[0]),np.fabs(old[1]-new[1])]
+  top = [np.fabs(old[i]-new[i]) for i in range(len(old))]
   top = max(top)
-  bot = [np.fabs(old[0]),np.fabs(old[1])]
+  bot = [np.fabs(old[i]) for i in range(len(old))]
   return top/max(bot)
 
-def newton(
+def newton(eqn,dEqn,guess):
+  return guess - eqn(guess)/dEqn(guess)
 
 def newton2d(one,two, guess):
   xD1 = derivative2dX(one)
