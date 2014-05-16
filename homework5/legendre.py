@@ -34,14 +34,14 @@ def Legendre(k, x):
 def genC(func):
   def square(x):
     return func(x)**2
-  return quad(square, -1, 1)
+  return quad(square, -1, 1)[0]
 
 def genAk(k, func):
   def legendre(x):
     return Legendre(k,x)
   def funcLegendre(x):
     return Legendre(k,x) * func(x)
-  return (1./genC(legendre)[0]) * quad(funcLegendre, -1, 1)[0]
+  return (1./genC(legendre)) * quad(funcLegendre, -1, 1)[0]
 
 def genP(k, func):
   def P(x):

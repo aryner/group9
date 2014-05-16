@@ -1,0 +1,18 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf190
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\b\fs24 \cf0 \ul \ulc0 Problem 3:
+\b0 \ulnone \
+\
+First we created the Legendre function which takes as inputs an integer specifying the degree of the Legendre polynomial wanted and an x value to evaluate the Legendre polynomial at and returns that evaluation.  Next we made the genC function which takes as an argument the function we are trying to approximate and returns the integral of that function squared.  Then we created the genAk function which takes as parameters an integer k and the function we are approximating, using the Legendre and genC functions returns the ak term.  Then we created the genP function which takes as parameters which iteration of the approximation polynomial we want and the function we are approximating.  Using the genAk and Legendre functions we return the approximating function.  Finally we created the function we are trying to approximate, used genP to create the 5 approximating polynomials and graphed the 6 functions.\
+\
+The graph makes it look like there only 3 approximating polynomials but there are 5.  It is just that P0 and P1 are the same and P2 and P3 are the same.  This is because the function we are approximating is even and  the odd Legendre polynomials are odd polynomials.  So the inner product of the odd Legendre polynomials with our function is the integral of an odd function from -1 to 1, which is 0.  So the odd Legendre polynomials contribute nothing to the approximation making each odd approximation equal to the previous approximation.\
+\
+Within the interval [-1,1] our P4 approximation is not too bad, it looks like a rounded version of the function that has been stretched a little bit.  But as soon as you move beyond -1 or 1 our approximation shoots off to infinity.  Similarly our P2 approximation is in the general area of the function until you look beyond -1 and 1, then it rapidly descends to negative infinity.\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural
+\cf0 {{\NeXTGraphic Pasted Graphic.tiff \width16000 \height12000
+}¬}}
