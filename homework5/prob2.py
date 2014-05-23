@@ -5,22 +5,22 @@ x = [0.01,0.9998,2.1203,3.0023,3.9892,5.0017]
 y = [0.9631,0.5221,0.233,0.1248,0.0107,0.0065]
 
 def normal1(x, y, a, b):
-  return (y - b*np.e**(a*x))*x*a*x
+  return (y-b*np.e**(a*x))*x*np.e**(a*x)
 
 def normal2(x, y, a, b):
-  return (y - b*np.e**(a*x))*np.e**(a*x)
+  return y-b*np.e**(a*x)
 
 def f1a(x,y,a,b):
-  return (x**2)*(y-b*np.e**(a*x)) - (b*a*np.e**(a*x))*x*a*x
+  return x**2*np.e**(a*x)*(y-2*b*np.e**(a*x))
 
 def f1b(x,y,a,b):
-  return -(x**2)*a*np.e**(a*x)
+  return x*np.e**(2*a*x)
 
 def f2a(x,y,a,b):
-  return a*y*np.e**(a*x) - 2*a*b*np.e**(2*a*x)
+  return -b*x*np.e**(a*x)
 
 def f2b(x,y,a,b):
-  return -np.e**(2*a*x)
+  return -np.e**(a*x)
 
 def inverseJacobi(a,b):
   topLeft = sum([f1a(x[i],y[i],a,b) for i in range(len(x))])
@@ -32,13 +32,26 @@ def inverseJacobi(a,b):
 
   return j.I
 
-guess = [0.,0.]
-J = inverseJacobi(guess[0],guess[1])
-f1 = sum([normal1(x[i],y[i],guess[0],guess[1]) for i in range(len(x))])
-f2 = sum([normal2(x[i],y[i],guess[0],guess[1]) for i in range(len(x))])
-deltaX = -J*np.matrix([[f1],[f2]])
-print J
-print deltaX
+def tolerance(g1,g2):
+  top = np.maximum(abs(g2[0]-g1[0]),abs(g2[1]-g1[1]))
+  bot = np.maximum(abs(g2[0]), abs(g2[1]))
+  return top/bot
+
+guess = [-1.,1.]
+
+while(1 == 1):
+  J = inverseJacobi(guess[0],guess[1])
+  f1 = sum([normal1(x[i],y[i],guess[0],guess[1]) for i in range(len(x))])
+  f2 = sum([normal2(x[i],y[i],guess[0],guess[1]) for i in range(len(x))])
+  deltaX = -J*np.matrix([[f1],[f2]])
+  oldGuess = guess
+  deltaX = deltaX.A1
+  guess = [guess[0]+deltaX[0], guess[1]+deltaX[1]]
+
+  if(tolerance(oldGuess,guess) < .00001):
+    break
+
+print guess
 
 '''
 plt.figure(1)
@@ -53,7 +66,7 @@ mat2 = mat.I
 print mat2
 '''
 
-'''#
+'''
 p = np.polynomial.polynomial.polyval(2,[1,2,3,])
 print p
 '''
