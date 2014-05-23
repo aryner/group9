@@ -1,8 +1,12 @@
+from legendre import *
 import numpy as np
 import matplotlib.pyplot as plt
 
 x = [0.01,0.9998,2.1203,3.0023,3.9892,5.0017]
 y = [0.9631,0.5221,0.233,0.1248,0.0107,0.0065]
+
+def func(a,b,x):
+  return b*np.e**(a*x)
 
 def normal1(x, y, a, b):
   return (y-b*np.e**(a*x))*x*np.e**(a*x)
@@ -51,13 +55,14 @@ while(1 == 1):
   if(tolerance(oldGuess,guess) < .00001):
     break
 
-print guess
+x1 = generateX(100, -0.1, 5.1)
+y1 = [func(guess[0],guess[1],x1[i]) for i in range(len(x1))]
 
-'''
+
 plt.figure(1)
 plt.plot(x,y)
+plt.plot(x1,y1)
 plt.show()
-'''
 
 '''
 mat = np.matrix([[1,2],[3,4]])
