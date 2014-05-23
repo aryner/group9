@@ -57,23 +57,13 @@ while(1 == 1):
 
 x1 = generateX(100, -0.1, 5.1)
 y1 = [func(guess[0],guess[1],x1[i]) for i in range(len(x1))]
+E = sum([(y[i]-func(guess[0],guess[1],x[i]))**2 for i in range(len(x))])
 
+print("The best fit function is: {0}e^({1}x)".format(guess[1],guess[0]))
+print("The sum of the squared errors is: {0}".format(E))
 
 plt.figure(1)
 plt.plot(x,y)
 plt.plot(x1,y1)
 plt.show()
-
-'''
-mat = np.matrix([[1,2],[3,4]])
-print mat
-mat2 = mat.I
-print mat2
-'''
-
-'''
-p = np.polynomial.polynomial.polyval(2,[1,2,3,])
-print p
-'''
-
 
